@@ -147,7 +147,7 @@ def einsum(rule, a, b, use_einsum=True): # custom use_einsum=True
         return torch.bmm(a, b.transpose(1, 2)).squeeze(2)
     #####################################################################################################################
     # custom
-    elif rule == 'sec,ecm->e_sm': # 将输出按照每个专家组织  # [e, s, m]
+    elif rule == 'sec,ecm->e_sm': # Organize outputs by expert  # [e, s, m]
         output = torch.stack([a[:, i] @ b[i] for i in range(a.shape[1])], dim=0)  # [e, s, m]
         return output
 
@@ -303,7 +303,7 @@ def top2gating(logits: Tensor,
                top2_2nd_expert_sampling: bool = True) -> Tuple[Tensor, Tensor, Tensor, Tensor]:
     """Implements Top2Gating on logits."""
     # everything is in fp32 in this function
-    original_logits = logits.clone()  # 保留梯度 custom
+    original_logits = logits.clone()  # Preserve gradients custom
     gates = F.softmax(logits, dim=1)
 
     # Create a mask for 1st's expert per token
@@ -390,7 +390,7 @@ def topkgating(
     drop_policy: str = "probs",
 ) -> Tuple[Tensor, Tensor, Tensor, Tensor]:
     """Implements TopKGating on logits."""
-    original_logits = logits.clone()  # 保留梯度
+    original_logits = logits.clone()  # Preserve gradients
     # everything is in fp32 in this function
     # get topk gates
     top_gate, top_idx = torch.topk(logits, k=k, dim=1)
@@ -681,7 +681,7 @@ class MOELayer(Base):
         a = combined_output.reshape(input[0].shape)
         
         ####################################################################
-        # custom: n 个专家的输出按照第一个维度切分可取得每个专家的输出
+        # custom: outputs for n experts are split along the first dimension
     
         custom_output = einsum("sec,ecm->e_sm", combine_weights.type_as(input[0]), expert_output,use_einsum=False)
 

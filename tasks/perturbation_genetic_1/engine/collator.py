@@ -165,7 +165,7 @@ class scCollatorPerturb:
                 else:
                     final_indices = list(range(len(gene_ids)))
 
-            assert len(gene_ids) == len(ctrl_exp) == len(target_exp) == len(pert_mtx) == len(chr_ids) == len(pos_ids), "长度不一致，数据异常！"
+            assert len(gene_ids) == len(ctrl_exp) == len(target_exp) == len(pert_mtx) == len(chr_ids) == len(pos_ids), "Length mismatch, data is invalid!"
 
             gene_ids = [gene_ids[i] for i in final_indices]
             ctrl_exp = [ctrl_exp[i] for i in final_indices]

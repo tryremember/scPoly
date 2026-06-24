@@ -251,8 +251,8 @@ class MoETransformerEncoderLayer(nn.Module):
             batchsize, seqlen, embsize1 = x.shape
             e, bsl, embsize2 = custom_output.shape
 
-            assert batchsize * seqlen == bsl, "维度不匹配：batch_size × seq_len 应该等于 custom_outputs 的第二维"
-            assert embsize1 == embsize2, "嵌入维度不一致"
+            assert batchsize * seqlen == bsl, "Dimension mismatch: batch_size x seq_len should equal the second dimension of custom_outputs"
+            assert embsize1 == embsize2, "Embedding dimensions are inconsistent"
 
             custom_output = custom_output.reshape(e, batchsize, seqlen, embsize2)
             custom_output = custom_output[:, :, 0, :]
