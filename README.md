@@ -1,5 +1,8 @@
 # scPoly
 
+## Description
+scPoly is a subspace-adaptive single-cell foundation model designed for heterogeneous and variable gene spaces. By learning from varying gene subsets and combining context-dependent dynamic computation with structured gene representations, scPoly adapts to the genes available in each input and supports diverse downstream tasks, including cell type annotation, cross-platform and cross-species transfer, and perturbation prediction.
+
 ## Environment Setup
 
 This project depends on `deepspeed==0.16.5` and includes a patched `deepspeed/moe` module used by the scPoly experiments.
@@ -37,11 +40,11 @@ If needed, the same setup can also be run manually with `env_setup/environment.y
 
 The provided example commands are configured for a single machine with 6 GPUs. We recommend using at least 3 GPUs for running the project.
 
+
 ## Download Data and Checkpoints
 
-The processed datasets and trained checkpoints used in this project are available at:
+Pretrained checkpoint and most of the processed datasets used in scPoly are available at: [Download](https://doi.org/10.6084/m9.figshare.32621973). For specific datasets used for each task, please refer to the [Supported Tasks](#supported-tasks) section.
 
-https://doi.org/10.6084/m9.figshare.32621973
 
 Please download the required files from this link before running experiments.
 
@@ -54,6 +57,27 @@ Recommended local directory layout:
 
 
 The project also uses additional files such as gene order files and the extended vocabulary. These are already organized under `meta_info/`. The extended vocabulary will also be provided inside the corresponding dataset folders when applicable.
+
+
+## Supported Tasks
+
+| Task | Folder | Dataset download | Input format |
+|---|---|---|---|
+| Standard cell annotation | tasks/annotation | [Download benchmark datasets](https://doi.org/10.6084/m9.figshare.32621973)<br>[Download pan-cancer dataset](https://zenodo.org/records/15554080) | .h5ad |
+| Spatial-transfer annotation | tasks/annotation | [Download](https://doi.org/10.6084/m9.figshare.32621973) | .h5ad |
+| Cross-species annotation | tasks/annotation | [Download](https://zenodo.org/records/12792984) | .h5ad |
+| Genetic perturbation (fixed gene set) | tasks/perturbation_genetic_1 | [Download](https://doi.org/10.6084/m9.figshare.32621973) | .parquet |
+| Genetic perturbation (variable gene set) | tasks/perturbation_genetic_2 | [Download](https://doi.org/10.6084/m9.figshare.32621973) | .parquet |
+| Chemical perturbation | tasks/perturbation_chemical | [Download](https://doi.org/10.6084/m9.figshare.32621973) | .parquet |
+| ASG analysis | tasks/ASG | [Download](https://doi.org/10.6084/m9.figshare.32621973) | .h5ad |
+|
+
+Each task folder follows the same pattern:
+
+- `trainer.py`: fine-tuning (task training)
+- `infer.py`: inference (downstream prediction)
+- `save/`: generated at runtime and used for trained checkpoints and outputs
+
 
 ## Run Tasks
 
